@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.EvaluateInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.EvaluateInfo">
+    <id column="evaluate_id" jdbcType="CHAR" property="evaluateId" />
+    <result column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="evaluate_star" jdbcType="INTEGER" property="evaluateStar" />
+    <result column="evaluate_time" jdbcType="TIMESTAMP" property="evaluateTime" />
+    <result column="isvilify" jdbcType="INTEGER" property="isvilify" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cyx.pojo.EvaluateInfo">
+    <result column="evaluate_content" jdbcType="LONGVARCHAR" property="evaluateContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    evaluate_id, order_id, user_id, evaluate_star, evaluate_time, isvilify
+  </sql>
+  <sql id="Blob_Column_List">
+    evaluate_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from evaluate_info
+    where evaluate_id = #{evaluateId,jdbcType=CHAR}
+  </select>
+   <select id="selectAuntService" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+ 	 *
+       from evaluate_info join  order_info on order_info.order_id = evaluate_info.order_id
+where order_info.service_id= #{0} and aunt_id = #{1} and evaluate_info.evaluate_star>=3;
+  </select>
+   <select id="selectByOrderid" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+ 	 *
+       from evaluate_info where evaluate_info.order_id=#{0};
+  </select>
+  <select id="selectThreestar" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from evaluate_info
+    where order_id = #{orderId,jdbcType=CHAR} and evaluate_star>=3 and isvilify = 1;
+  </select>
+  <update id="updateRateSelective" parameterType="com.cyx.pojo.EvaluateInfo">
+ 	  UPDATE  order_info JOIN auntservice_info ON order_info.aunt_id=auntservice_info.aunt_id and
+	order_info.service_id =auntservice_info.service_id and order_info.order_id=#{orderId,jdbcType=CHAR} 
+	SET service_rate= concat (truncate( (SELECT sum(evaluate_star)/(5.0*count(*)) FROM evaluate_info 
+	WHERE evaluate_info.order_id=  #{orderId,jdbcType=CHAR} )* 100,2),'%');
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from evaluate_info
+    where evaluate_id = #{evaluateId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.EvaluateInfo">
+    insert into evaluate_info (evaluate_id, order_id, user_id, 
+      evaluate_star, evaluate_time, isvilify, 
+      evaluate_content)
+    values (#{evaluateId,jdbcType=CHAR}, #{orderId,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, 
+      #{evaluateStar,jdbcType=INTEGER}, #{evaluateTime,jdbcType=TIMESTAMP}, #{isvilify,jdbcType=INTEGER}, 
+      #{evaluateContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.EvaluateInfo">
+    insert into evaluate_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="evaluateId != null">
+        evaluate_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="evaluateStar != null">
+        evaluate_star,
+      </if>
+      <if test="evaluateTime != null">
+        evaluate_time,
+      </if>
+      <if test="isvilify != null">
+        isvilify,
+      </if>
+      <if test="evaluateContent != null">
+        evaluate_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="evaluateId != null">
+        #{evaluateId,jdbcType=CHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="evaluateStar != null">
+        #{evaluateStar,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateTime != null">
+        #{evaluateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvilify != null">
+        #{isvilify,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateContent != null">
+        #{evaluateContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.EvaluateInfo">
+    update evaluate_info
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="evaluateStar != null">
+        evaluate_star = #{evaluateStar,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateTime != null">
+        evaluate_time = #{evaluateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvilify != null">
+        isvilify = #{isvilify,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateContent != null">
+        evaluate_content = #{evaluateContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where evaluate_id = #{evaluateId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cyx.pojo.EvaluateInfo">
+    update evaluate_info
+    set order_id = #{orderId,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=CHAR},
+      evaluate_star = #{evaluateStar,jdbcType=INTEGER},
+      evaluate_time = #{evaluateTime,jdbcType=TIMESTAMP},
+      isvilify = #{isvilify,jdbcType=INTEGER},
+      evaluate_content = #{evaluateContent,jdbcType=LONGVARCHAR}
+    where evaluate_id = #{evaluateId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.EvaluateInfo">
+    update evaluate_info
+    set order_id = #{orderId,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=CHAR},
+      evaluate_star = #{evaluateStar,jdbcType=INTEGER},
+      evaluate_time = #{evaluateTime,jdbcType=TIMESTAMP},
+      isvilify = #{isvilify,jdbcType=INTEGER}
+    where evaluate_id = #{evaluateId,jdbcType=CHAR}
+  </update>
+</mapper>

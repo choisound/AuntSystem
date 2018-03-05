@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.ServiceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.ServiceInfo">
+    <id column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="service_name" jdbcType="CHAR" property="serviceName" />
+    <result column="service_price" jdbcType="CHAR" property="servicePrice" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cyx.pojo.ServiceInfo">
+    <result column="service_desc" jdbcType="LONGVARCHAR" property="serviceDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    service_id, service_name, service_price
+  </sql>
+  <sql id="Blob_Column_List">
+    service_desc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from service_info
+    where service_id = #{serviceId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from service_info
+    where service_id = #{serviceId,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByName" parameterType="java.lang.String">
+    delete from service_info
+    where service_name = #{serviceName,jdbcType=CHAR}
+  </delete>
+  <select id="selectAll" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from service_info
+  </select>
+  <insert id="insert" parameterType="com.cyx.pojo.ServiceInfo">
+    insert into service_info (service_id, service_name, service_price, 
+      service_desc)
+    values (#{serviceId,jdbcType=CHAR}, #{serviceName,jdbcType=CHAR}, #{servicePrice,jdbcType=CHAR}, 
+      #{serviceDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.ServiceInfo">
+    insert into service_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serviceId != null">
+        service_id,
+      </if>
+      <if test="serviceName != null">
+        service_name,
+      </if>
+      <if test="servicePrice != null">
+        service_price,
+      </if>
+      <if test="serviceDesc != null">
+        service_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serviceId != null">
+        #{serviceId,jdbcType=CHAR},
+      </if>
+      <if test="serviceName != null">
+        #{serviceName,jdbcType=CHAR},
+      </if>
+      <if test="servicePrice != null">
+        #{servicePrice,jdbcType=CHAR},
+      </if>
+      <if test="serviceDesc != null">
+        #{serviceDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+   <update id="updateByNameSelective" parameterType="com.cyx.pojo.ServiceInfo">
+    update service_info
+    <set>
+      <if test="serviceName != null">
+        service_name = #{serviceName,jdbcType=CHAR},
+      </if>
+      <if test="servicePrice != null">
+        service_price = #{servicePrice,jdbcType=CHAR},
+      </if>
+      <if test="serviceDesc != null">
+        service_desc = #{serviceDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where service_name = #{serviceName,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.ServiceInfo">
+    update service_info
+    <set>
+      <if test="serviceName != null">
+        service_name = #{serviceName,jdbcType=CHAR},
+      </if>
+      <if test="servicePrice != null">
+        service_price = #{servicePrice,jdbcType=CHAR},
+      </if>
+      <if test="serviceDesc != null">
+        service_desc = #{serviceDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where service_id = #{serviceId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cyx.pojo.ServiceInfo">
+    update service_info
+    set service_name = #{serviceName,jdbcType=CHAR},
+      service_price = #{servicePrice,jdbcType=CHAR},
+      service_desc = #{serviceDesc,jdbcType=LONGVARCHAR}
+    where service_id = #{serviceId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.ServiceInfo">
+    update service_info
+    set service_name = #{serviceName,jdbcType=CHAR},
+      service_price = #{servicePrice,jdbcType=CHAR}
+    where service_id = #{serviceId,jdbcType=CHAR}
+  </update>
+</mapper>

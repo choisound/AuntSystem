@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.CustomerServiceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.CustomerServiceInfo">
+    <id column="customerservice_id" jdbcType="CHAR" property="customerserviceId" />
+    <result column="customerservice_phoneno" jdbcType="CHAR" property="customerservicePhoneno" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    customerservice_id, customerservice_phoneno
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customerservice_info
+    where customerservice_id = #{customerserviceId,jdbcType=CHAR}
+  </select>
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customerservice_info
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customerservice_info
+    where customerservice_id = #{customerserviceId,jdbcType=CHAR}
+  </delete>
+  
+  <delete id="deleteByPhoneno" parameterType="java.lang.String">
+    delete from customerservice_info
+    where customerservice_phoneno = #{customerservicePhoneno,jdbcType=CHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.cyx.pojo.CustomerServiceInfo">
+    insert into customerservice_info (customerservice_id, customerservice_phoneno
+      )
+    values (#{customerserviceId,jdbcType=CHAR}, #{customerservicePhoneno,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.CustomerServiceInfo">
+    insert into customerservice_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerserviceId != null">
+        customerservice_id,
+      </if>
+      <if test="customerservicePhoneno != null">
+        customerservice_phoneno,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerserviceId != null">
+        #{customerserviceId,jdbcType=CHAR},
+      </if>
+      <if test="customerservicePhoneno != null">
+        #{customerservicePhoneno,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.CustomerServiceInfo">
+    update customerservice_info
+    <set>
+      <if test="customerservicePhoneno != null">
+        customerservice_phoneno = #{customerservicePhoneno,jdbcType=CHAR},
+      </if>
+    </set>
+    where customerservice_id = #{customerserviceId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.CustomerServiceInfo">
+    update customerservice_info
+    set customerservice_phoneno = #{customerservicePhoneno,jdbcType=CHAR}
+    where customerservice_id = #{customerserviceId,jdbcType=CHAR}
+  </update>
+</mapper>

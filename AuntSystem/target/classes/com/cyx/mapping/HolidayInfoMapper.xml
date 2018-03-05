@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.HolidayInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.HolidayInfo">
+    <id column="holiday_id" jdbcType="CHAR" property="holidayId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="holiday_starttime" jdbcType="CHAR" property="holidayStarttime" />
+    <result column="holiday_endtime" jdbcType="CHAR" property="holidayEndtime" />
+  </resultMap>
+    <resultMap id="orderMap" type="com.cyx.pojo.OrderInfo">
+    <id column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="order_address" jdbcType="CHAR" property="orderAddress" />
+    <result column="order_money" jdbcType="CHAR" property="orderMoney" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_res" jdbcType="TIMESTAMP" property="orderRes" />
+    <result column="aunt_starttime" jdbcType="TIMESTAMP" property="auntStarttime" />
+    <result column="order_desc" jdbcType="CHAR" property="orderDesc" />
+    <result column="order_roughtime" jdbcType="TIMESTAMP" property="orderRoughtime" />
+    <result column="order_zwaddress" jdbcType="CHAR" property="orderZwaddress"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    holiday_id, aunt_id, holiday_starttime, holiday_endtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from holiday_info
+    where holiday_id = #{holidayId,jdbcType=CHAR}
+  </select>
+  <select id="selectByAuntId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from holiday_info
+    where aunt_id = #{0} and holiday_starttime like CONCAT(#{1},'%' );
+  </select>
+   <select id="selectAuntByHoliday" parameterType="java.lang.String" resultType="java.lang.String">
+     select aunt_id from holiday_info where (#{0} BETWEEN holiday_starttime and holiday_endtime )or(
+	#{1} BETWEEN holiday_starttime and holiday_endtime)
+  </select>
+ 
+  <insert id="insertHoliDays" parameterType="java.util.List">  
+    INSERT INTO holiday_info (holiday_id, aunt_id, holiday_starttime, 
+      holiday_endtime)
+    VALUES   
+    <foreach collection="list" item="holidayInfo" index="index" separator="," >  
+       (#{holidayInfo.holidayId}, #{holidayInfo.auntId}, #{holidayInfo.holidayStarttime},#{holidayInfo.holidayEndtime})  
+    </foreach>  
+</insert> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from holiday_info
+    where holiday_id = #{holidayId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.HolidayInfo">
+    insert into holiday_info (holiday_id, aunt_id, holiday_starttime, 
+      holiday_endtime)
+    values (#{holidayId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}, #{holidayStarttime,jdbcType=CHAR}, 
+      #{holidayEndtime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.HolidayInfo">
+    insert into holiday_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="holidayId != null">
+        holiday_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="holidayStarttime != null">
+        holiday_starttime,
+      </if>
+      <if test="holidayEndtime != null">
+        holiday_endtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="holidayId != null">
+        #{holidayId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="holidayStarttime != null">
+        #{holidayStarttime,jdbcType=CHAR},
+      </if>
+      <if test="holidayEndtime != null">
+        #{holidayEndtime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.HolidayInfo">
+    update holiday_info
+    <set>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="holidayStarttime != null">
+        holiday_starttime = #{holidayStarttime,jdbcType=CHAR},
+      </if>
+      <if test="holidayEndtime != null">
+        holiday_endtime = #{holidayEndtime,jdbcType=CHAR},
+      </if>
+    </set>
+    where holiday_id = #{holidayId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.HolidayInfo">
+    update holiday_info
+    set aunt_id = #{auntId,jdbcType=CHAR},
+      holiday_starttime = #{holidayStarttime,jdbcType=CHAR},
+      holiday_endtime = #{holidayEndtime,jdbcType=CHAR}
+    where holiday_id = #{holidayId,jdbcType=CHAR}
+  </update>
+</mapper>

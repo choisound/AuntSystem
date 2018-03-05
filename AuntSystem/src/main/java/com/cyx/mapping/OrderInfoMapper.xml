@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.OrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.OrderInfo">
+    <id column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="order_address" jdbcType="CHAR" property="orderAddress" />
+    <result column="order_money" jdbcType="CHAR" property="orderMoney" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_res" jdbcType="TIMESTAMP" property="orderRes" />
+    <result column="aunt_starttime" jdbcType="TIMESTAMP" property="auntStarttime" />
+    <result column="order_desc" jdbcType="CHAR" property="orderDesc" />
+    <result column="order_roughtime" jdbcType="TIMESTAMP" property="orderRoughtime" />
+    <result column="order_zwaddress" jdbcType="CHAR" property="orderZwaddress"/>
+  </resultMap>
+  <resultMap id="Order_YMSResultMap" type="com.cyx.pojo.OrderInfo_YMS">
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="order_money" jdbcType="CHAR" property="orderMoney" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_zwaddress" jdbcType="CHAR" property="orderZwaddress"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, user_id, aunt_id, service_id, start_time, end_time, order_address, order_money, 
+    order_state, order_res, aunt_starttime, order_desc, order_roughtime,order_zwaddress
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_info
+    where order_id = #{orderId,jdbcType=CHAR}
+  </select>
+  <select id="selectSendingOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+     order_id ,order_state
+    from order_info
+    where order_state=0 
+    limit #{0},#{1}
+  </select>
+   <select id="SelectTenDayUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select order_info.user_id from order_info GROUP BY order_info.user_id HAVING DATEDIFF(NOW(),max(order_info.end_time))>=30 and DATEDIFF(NOW(),max(order_info.order_roughtime))>=30 limit #{0},#{1};
+  </select>
+  <select id="SelectTenDayAunt" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select order_info.aunt_id from order_info  GROUP BY order_info.aunt_id HAVING DATEDIFF(NOW(),max(order_info.end_time))>=30 and DATEDIFF(NOW(),max(order_info.order_roughtime))>=30 limit #{0},#{1};
+  </select>
+  <select id="selectSendingOrderCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from order_info
+    where order_state=0
+  </select>
+    
+  <select id="selectAllOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+     order_id ,order_state
+    from order_info
+    limit #{0},#{1}
+  </select>
+
+ <select id="selectAuntByAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * from order_info WHERE order_info.order_address LIKE concat(left(#{0},3),'%') AND
+TO_DAYS(order_info.order_res)=TO_DAYS(#{1}) and order_info.order_state>=1 and order_info.order_state &lt; 5;
+  </select>
+  <select id="selectAllOrderCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from order_info
+  </select>
+  <select id="selectAllOrderInfo" parameterType="java.lang.String" resultMap="Order_YMSResultMap">
+   SELECT start_time,order_info.order_money,order_info.order_state,order_info.order_zwaddress from order_info where order_state>=8;
+  </select>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from order_info
+    where order_id = #{orderId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.OrderInfo">
+    insert into order_info (order_id, user_id, aunt_id, 
+      service_id, start_time, end_time, 
+      order_address, order_money, order_state, 
+      order_res, aunt_starttime, order_desc, 
+      order_roughtime,order_zwaddress) 
+    values (#{orderId,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}, 
+      #{serviceId,jdbcType=CHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{orderAddress,jdbcType=CHAR}, #{orderMoney,jdbcType=CHAR}, #{orderState,jdbcType=INTEGER}, 
+      #{orderRes,jdbcType=TIMESTAMP}, #{auntStarttime,jdbcType=TIMESTAMP}, #{orderDesc,jdbcType=CHAR}, 
+      #{orderRoughtime,jdbcType=TIMESTAMP},#{orderZwaddress,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.OrderInfo">
+    insert into order_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="serviceId != null">
+        service_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="orderAddress != null">
+        order_address,
+      </if>
+      <if test="orderMoney != null">
+        order_money,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="orderRes != null">
+        order_res,
+      </if>
+      <if test="auntStarttime != null">
+        aunt_starttime,
+      </if>
+      <if test="orderDesc != null">
+        order_desc,
+      </if>
+      <if test="orderRoughtime != null">
+        order_roughtime,
+      </if> 
+       <if test="orderZwaddress != null">
+        order_zwaddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        #{serviceId,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderAddress != null">
+        #{orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="orderMoney != null">
+        #{orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderRes != null">
+        #{orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntStarttime != null">
+        #{auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDesc != null">
+        #{orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="orderRoughtime != null">
+        #{orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderZwaddress != null">
+        #{orderZwaddress,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.OrderInfo">
+    update order_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        service_id = #{serviceId,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderAddress != null">
+        order_address = #{orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="orderMoney != null">
+        order_money = #{orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderRes != null">
+        order_res = #{orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntStarttime != null">
+        aunt_starttime = #{auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDesc != null">
+        order_desc = #{orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="orderRoughtime != null">
+        order_roughtime = #{orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.OrderInfo">
+    update order_info
+    set user_id = #{userId,jdbcType=CHAR},
+      aunt_id = #{auntId,jdbcType=CHAR},
+      service_id = #{serviceId,jdbcType=CHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      order_address = #{orderAddress,jdbcType=CHAR},
+      order_money = #{orderMoney,jdbcType=CHAR},
+      order_state = #{orderState,jdbcType=INTEGER},
+      order_res = #{orderRes,jdbcType=TIMESTAMP},
+      aunt_starttime = #{auntStarttime,jdbcType=TIMESTAMP},
+      order_desc = #{orderDesc,jdbcType=CHAR},
+      order_roughtime = #{orderRoughtime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=CHAR}
+  </update>
+</mapper>

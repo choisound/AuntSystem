@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AuntInfoMapper">
+	<resultMap id="BaseResultMap" type="com.cyx.pojo.AuntInfo">
+		<id column="aunt_id" jdbcType="CHAR" property="auntId" />
+		<result column="resgiter_id" jdbcType="CHAR" property="resgiterId" />
+		<result column="aunt_name" jdbcType="CHAR" property="auntName" />
+		<result column="aunt_sex" jdbcType="CHAR" property="auntSex" />
+		<result column="aunt_address" jdbcType="CHAR" property="auntAddress" />
+		<result column="aunt_identity" jdbcType="CHAR" property="auntIdentity" />
+		<result column="aunt_identityimage" jdbcType="CHAR"
+			property="auntIdentityimage" />
+		<result column="aunt_identityibackamge" jdbcType="CHAR"
+			property="auntIdentityibackamge" />
+		<result column="aunt_phoneno" jdbcType="CHAR" property="auntPhoneno" />
+		<result column="aunt_count" jdbcType="CHAR" property="auntCount" />
+		<result column="aunt_password" jdbcType="CHAR" property="auntPassword" />
+		<result column="aunt_positon" jdbcType="CHAR" property="auntPositon" />
+		<result column="aunt_parttimejob" jdbcType="INTEGER" property="auntParttimejob" />
+		<result column="aunt_state" jdbcType="INTEGER" property="auntState" />
+		<result column="aunt_hasorder" jdbcType="INTEGER" property="auntHasorder" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		aunt_id,resgiter_id, aunt_name, aunt_sex, aunt_address, aunt_identity, aunt_identityimage,
+		aunt_identityibackamge,
+		aunt_phoneno, aunt_count, aunt_password, aunt_positon, aunt_parttimejob,
+		aunt_state,aunt_hasorder
+	</sql>
+	<sql id="return_List">
+		aunt_id,resgiter_id, aunt_name, aunt_sex, aunt_address, aunt_identity, aunt_identityimage,
+		aunt_identityibackamge,
+		aunt_phoneno, aunt_count, aunt_positon, aunt_parttimejob, aunt_state
+	</sql>
+	<select id="selectAllListCount" resultType="java.lang.Integer">
+		select
+		count(*)
+		from aunt_info
+	</select>
+	<select id="selectResigerListCount" resultType="java.lang.Integer">
+		select
+		count(*)
+		from aunt_info
+		where aunt_state =1
+	</select>
+	<select id="selectAllList" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		limit #{0},#{1}
+	</select>
+	<select id="selectResigerList" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		where aunt_state =1
+		limit #{0},#{1}
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		where aunt_id = #{auntId,jdbcType=CHAR}
+	</select>
+	<select id="adminselectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		*
+		from aunt_info
+		where aunt_id = #{auntId,jdbcType=CHAR}
+	</select>
+	<select id="selectByPhonenoAndPassword" resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		where aunt_phoneno = #{0} and aunt_password=#{1}
+	</select>
+	<select id="selectByPhoneno" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		where aunt_phoneno = #{auntPhoneno,jdbcType=CHAR}
+	</select>
+	<select id="selectByIdentity" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="return_List" />
+		from aunt_info
+		where aunt_identity = #{auntIdentity,jdbcType=CHAR}
+	</select>
+	<select id="queryListByIds" resultMap="BaseResultMap">
+		Select
+		<include refid="Base_Column_List" />
+		from aunt_info where aunt_id in
+		<foreach item="item" index="index" collection="lists" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="selectByAddress" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select <include refid="return_List" /> from aunt_info where aunt_info.aunt_address LIKE
+		concat(left(#{0},3),'%') ;
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from aunt_info
+		where aunt_id = #{auntId,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" parameterType="com.cyx.pojo.AuntInfo">
+		insert into aunt_info (aunt_id, resgiter_id,aunt_name, aunt_sex,
+		aunt_address, aunt_identity, aunt_identityimage,
+		aunt_identityibackamge, aunt_phoneno, aunt_count,
+		aunt_password, aunt_positon, aunt_parttimejob,
+		aunt_state,aunt_hasorder)
+		values (#{auntId,jdbcType=CHAR},
+		#{resgiterId,jdbcType=CHAR},#{auntName,jdbcType=CHAR},
+		#{auntSex,jdbcType=CHAR},
+		#{auntAddress,jdbcType=CHAR}, #{auntIdentity,jdbcType=CHAR}, #{auntIdentityimage,jdbcType=CHAR},
+		#{auntIdentityibackamge,jdbcType=CHAR}, #{auntPhoneno,jdbcType=CHAR},
+		#{auntCount,jdbcType=CHAR},
+		#{auntPassword,jdbcType=CHAR}, #{auntPositon,jdbcType=CHAR}, #{auntParttimejob,jdbcType=INTEGER},
+		#{auntState,jdbcType=INTEGER},#{auntHasorder,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cyx.pojo.AuntInfo">
+		insert into aunt_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="auntId != null">
+				aunt_id,
+			</if>
+			<if test="auntName != null">
+				aunt_name,
+			</if>
+			<if test="resgiterId != null">
+				resgiter_id,
+			</if>
+			<if test="auntSex != null">
+				aunt_sex,
+			</if>
+			<if test="auntAddress != null">
+				aunt_address,
+			</if>
+			<if test="auntIdentity != null">
+				aunt_identity,
+			</if>
+			<if test="auntIdentityimage != null">
+				aunt_identityimage,
+			</if>
+			<if test="auntIdentityibackamge != null">
+				aunt_identityibackamge,
+			</if>
+			<if test="auntPhoneno != null">
+				aunt_phoneno,
+			</if>
+			<if test="auntCount != null">
+				aunt_count,
+			</if>
+			<if test="auntPassword != null">
+				aunt_password,
+			</if>
+			<if test="auntPositon != null">
+				aunt_positon,
+			</if>
+			<if test="auntParttimejob != null">
+				aunt_parttimejob,
+			</if>
+			<if test="auntState != null">
+				aunt_state,
+			</if>
+			<if test="auntHasorder != null">
+				aunt_hasorder,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="auntId != null">
+				#{auntId,jdbcType=CHAR},
+			</if>
+			<if test="auntName != null">
+				#{auntName,jdbcType=CHAR},
+			</if>
+			<if test="resgiterId != null">
+				#{resgiterId,jdbcType=CHAR},
+			</if>
+			<if test="auntSex != null">
+				#{auntSex,jdbcType=CHAR},
+			</if>
+			<if test="auntAddress != null">
+				#{auntAddress,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentity != null">
+				#{auntIdentity,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityimage != null">
+				#{auntIdentityimage,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityibackamge != null">
+				#{auntIdentityibackamge,jdbcType=CHAR},
+			</if>
+			<if test="auntPhoneno != null">
+				#{auntPhoneno,jdbcType=CHAR},
+			</if>
+			<if test="auntCount != null">
+				#{auntCount,jdbcType=CHAR},
+			</if>
+			<if test="auntPassword != null">
+				#{auntPassword,jdbcType=CHAR},
+			</if>
+			<if test="auntPositon != null">
+				#{auntPositon,jdbcType=CHAR},
+			</if>
+			<if test="auntParttimejob != null">
+				#{auntParttimejob,jdbcType=INTEGER},
+			</if>
+			<if test="auntState != null">
+				#{auntState,jdbcType=INTEGER},
+			</if>
+			<if test="auntHasorder != null">
+				#{auntHasorder,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPhoneNoSelective" parameterType="com.cyx.pojo.AuntInfo">
+		update aunt_info
+		<set>
+			<if test="auntName != null">
+				aunt_name = #{auntName,jdbcType=CHAR},
+			</if>
+			<if test="auntSex != null">
+				aunt_sex = #{auntSex,jdbcType=CHAR},
+			</if>
+			<if test="auntAddress != null">
+				aunt_address = #{auntAddress,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentity != null">
+				aunt_identity = #{auntIdentity,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityimage != null">
+				aunt_identityimage = #{auntIdentityimage,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityibackamge != null">
+				aunt_identityibackamge = #{auntIdentityibackamge,jdbcType=CHAR},
+			</if>
+			<if test="auntPhoneno != null">
+				aunt_phoneno = #{auntPhoneno,jdbcType=CHAR},
+			</if>
+			<if test="auntCount != null">
+				aunt_count = #{auntCount,jdbcType=CHAR},
+			</if>
+			<if test="auntPassword != null">
+				aunt_password = #{auntPassword,jdbcType=CHAR},
+			</if>
+			<if test="auntPositon != null">
+				aunt_positon = #{auntPositon,jdbcType=CHAR},
+			</if>
+			<if test="auntParttimejob != null">
+				aunt_parttimejob = #{auntParttimejob,jdbcType=INTEGER},
+			</if>
+			<if test="auntState != null">
+				aunt_state = #{auntState,jdbcType=INTEGER},
+			</if>
+			<if test="auntHasorder != null">
+				aunt_hasorder=#{auntHasorder,jdbcType=INTEGER},
+			</if>
+		</set>
+		where aunt_phoneno = #{auntPhoneno,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.AuntInfo">
+		update aunt_info
+		<set>
+			<if test="auntName != null">
+				aunt_name = #{auntName,jdbcType=CHAR},
+			</if>
+			<if test="auntSex != null">
+				aunt_sex = #{auntSex,jdbcType=CHAR},
+			</if>
+			<if test="auntAddress != null">
+				aunt_address = #{auntAddress,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentity != null">
+				aunt_identity = #{auntIdentity,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityimage != null">
+				aunt_identityimage = #{auntIdentityimage,jdbcType=CHAR},
+			</if>
+			<if test="auntIdentityibackamge != null">
+				aunt_identityibackamge = #{auntIdentityibackamge,jdbcType=CHAR},
+			</if>
+			<if test="auntPhoneno != null">
+				aunt_phoneno = #{auntPhoneno,jdbcType=CHAR},
+			</if>
+			<if test="auntCount != null">
+				aunt_count = #{auntCount,jdbcType=CHAR},
+			</if>
+			<if test="auntPassword != null">
+				aunt_password = #{auntPassword,jdbcType=CHAR},
+			</if>
+			<if test="auntPositon != null">
+				aunt_positon = #{auntPositon,jdbcType=CHAR},
+			</if>
+			<if test="auntParttimejob != null">
+				aunt_parttimejob = #{auntParttimejob,jdbcType=INTEGER},
+			</if>
+			<if test="auntState != null">
+				aunt_state = #{auntState,jdbcType=INTEGER},
+			</if>
+			<if test="auntHasorder != null">
+				aunt_hasorder=#{auntHasorder,jdbcType=INTEGER},
+			</if>
+		</set>
+		where aunt_id = #{auntId,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cyx.pojo.AuntInfo">
+		update aunt_info
+		set aunt_name = #{auntName,jdbcType=CHAR},
+		aunt_sex = #{auntSex,jdbcType=CHAR},
+		aunt_address = #{auntAddress,jdbcType=CHAR},
+		aunt_identity = #{auntIdentity,jdbcType=CHAR},
+		aunt_identityimage = #{auntIdentityimage,jdbcType=CHAR},
+		aunt_identityibackamge = #{auntIdentityibackamge,jdbcType=CHAR},
+		aunt_phoneno = #{auntPhoneno,jdbcType=CHAR},
+		aunt_count = #{auntCount,jdbcType=CHAR},
+		aunt_password = #{auntPassword,jdbcType=CHAR},
+		aunt_positon = #{auntPositon,jdbcType=CHAR},
+		aunt_parttimejob = #{auntParttimejob,jdbcType=INTEGER},
+		aunt_state = #{auntState,jdbcType=INTEGER},
+		aunt_hasorder=#{auntHasorder,jdbcType=INTEGER}
+		where aunt_id = #{auntId,jdbcType=CHAR}
+	</update>
+</mapper>

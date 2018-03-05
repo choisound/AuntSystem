@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.BlackListInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.BlackListInfo">
+    <id column="blacklist_id" jdbcType="CHAR" property="blacklistId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+  </resultMap>
+    <resultMap type="com.cyx.pojo.BlackListContentInfo" id="BlackListContent">  
+     <id column="blacklist_id" jdbcType="CHAR" property="blacklistId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <association property="auntInfo" resultMap="auntinfo"/>
+</resultMap>  
+  <resultMap id="auntinfo" type="com.cyx.pojo.AuntInfo">
+    <id column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="resgiter_id"  jdbcType="CHAR" property="resgiterId"/>
+    <result column="aunt_name" jdbcType="CHAR" property="auntName" />
+    <result column="aunt_sex" jdbcType="CHAR" property="auntSex" />
+    <result column="aunt_address" jdbcType="CHAR" property="auntAddress" />
+    <result column="aunt_identity" jdbcType="CHAR" property="auntIdentity" />
+    <result column="aunt_identityimage" jdbcType="CHAR" property="auntIdentityimage" />
+    <result column="aunt_identityibackamge" jdbcType="CHAR" property="auntIdentityibackamge" />
+    <result column="aunt_phoneno" jdbcType="CHAR" property="auntPhoneno" />
+    <result column="aunt_count" jdbcType="CHAR" property="auntCount" />
+    <result column="aunt_password" jdbcType="CHAR" property="auntPassword" />
+    <result column="aunt_positon" jdbcType="CHAR" property="auntPositon" />
+    <result column="aunt_parttimejob" jdbcType="INTEGER" property="auntParttimejob" />
+    <result column="aunt_state" jdbcType="INTEGER" property="auntState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    blacklist_id, user_id, aunt_id
+  </sql>
+   <sql id="return_List">
+    aunt_info.aunt_id, aunt_info.aunt_name, aunt_info.aunt_sex,aunt_info.aunt_phoneno
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blacklist_info
+    where blacklist_id = #{blacklistId,jdbcType=CHAR}
+  </select>
+   <select id="selectByUserIdLimit" parameterType="java.lang.String" resultMap="auntinfo">
+    select 
+    <include refid="return_List" />
+    from blacklist_info Join aunt_info on aunt_info.aunt_id=blacklist_info.aunt_id
+    where user_id = #{userId} limit #{start},#{end}
+  </select>
+  <select id="selectByUserIdLimitCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from blacklist_info Join aunt_info on aunt_info.aunt_id=blacklist_info.aunt_id
+    where user_id =#{userId,jdbcType=CHAR}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BlackListContent">
+    select 
+    blacklist_info.*,aunt_info.*
+    from blacklist_info Join aunt_info on aunt_info.aunt_id=blacklist_info.aunt_id
+    where user_id = #{userId,jdbcType=CHAR}
+  </select>
+    <select id="selectBlacklistByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    blacklist_info.*
+    from blacklist_info
+    where user_id = #{userId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from blacklist_info
+    where blacklist_id = #{blacklistId,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByAuntUserId" parameterType="java.lang.String">
+    delete from blacklist_info
+    where user_id = #{0}
+    and aunt_id=#{1}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.BlackListInfo">
+    insert into blacklist_info (blacklist_id, user_id, aunt_id
+      )
+    values (#{blacklistId,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.BlackListInfo">
+    insert into blacklist_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="blacklistId != null">
+        blacklist_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="blacklistId != null">
+        #{blacklistId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.BlackListInfo">
+    update blacklist_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+    </set>
+    where blacklist_id = #{blacklistId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.BlackListInfo">
+    update blacklist_info
+    set user_id = #{userId,jdbcType=CHAR},
+      aunt_id = #{auntId,jdbcType=CHAR}
+    where blacklist_id = #{blacklistId,jdbcType=CHAR}
+  </update>
+</mapper>

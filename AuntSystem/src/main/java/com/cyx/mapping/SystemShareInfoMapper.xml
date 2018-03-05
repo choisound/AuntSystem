@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.SystemShareInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.SystemShareInfo">
+    <id column="share_info_id" jdbcType="CHAR" property="shareInfoId" />
+    <result column="admin_id" jdbcType="CHAR" property="adminId" />
+    <result column="share_time" jdbcType="TIMESTAMP" property="shareTime" />
+    <result column="share_content" jdbcType="CHAR" property="shareContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    share_info_id, admin_id, share_time, share_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_share_info
+    where share_info_id = #{shareInfoId,jdbcType=CHAR}
+  </select>
+  
+  
+  
+  <select id="selectByAdminId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    *
+    from system_share_info
+    where admin_id = #{admin_id,jdbcType=CHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from system_share_info
+    where share_info_id = #{shareInfoId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.SystemShareInfo">
+    insert into system_share_info (share_info_id, admin_id, share_time, 
+      share_content)
+    values (#{shareInfoId,jdbcType=CHAR}, #{adminId,jdbcType=CHAR}, #{shareTime,jdbcType=TIMESTAMP}, 
+      #{shareContent,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.SystemShareInfo">
+    insert into system_share_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shareInfoId != null">
+        share_info_id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="shareTime != null">
+        share_time,
+      </if>
+      <if test="shareContent != null">
+        share_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shareInfoId != null">
+        #{shareInfoId,jdbcType=CHAR},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=CHAR},
+      </if>
+      <if test="shareTime != null">
+        #{shareTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shareContent != null">
+        #{shareContent,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.SystemShareInfo">
+    update system_share_info
+    <set>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=CHAR},
+      </if>
+      <if test="shareTime != null">
+        share_time = #{shareTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shareContent != null">
+        share_content = #{shareContent,jdbcType=CHAR},
+      </if>
+    </set>
+    where share_info_id = #{shareInfoId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.SystemShareInfo">
+    update system_share_info
+    set admin_id = #{adminId,jdbcType=CHAR},
+      share_time = #{shareTime,jdbcType=TIMESTAMP},
+      share_content = #{shareContent,jdbcType=CHAR}
+    where share_info_id = #{shareInfoId,jdbcType=CHAR}
+  </update>
+</mapper>

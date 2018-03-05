@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.FeedbackInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.FeedbackInfo">
+    <id column="feedback_id" jdbcType="CHAR" property="feedbackId" />
+    <result column="evaluate_id" jdbcType="CHAR" property="evaluateId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cyx.pojo.FeedbackInfo">
+    <result column="feedback_content" jdbcType="LONGVARCHAR" property="feedbackContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    feedback_id, evaluate_id
+  </sql>
+  <sql id="Blob_Column_List">
+    feedback_content
+  </sql>
+    <select id="selectByEvaluateId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from feedback_info
+    where evaluate_id = #{evaluate_id,jdbcType=CHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from feedback_info
+    where feedback_id = #{feedbackId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from feedback_info
+    where feedback_id = #{feedbackId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.FeedbackInfo">
+    insert into feedback_info (feedback_id, evaluate_id, feedback_content
+      )
+    values (#{feedbackId,jdbcType=CHAR}, #{evaluateId,jdbcType=CHAR}, #{feedbackContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.FeedbackInfo">
+    insert into feedback_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feedbackId != null">
+        feedback_id,
+      </if>
+      <if test="evaluateId != null">
+        evaluate_id,
+      </if>
+      <if test="feedbackContent != null">
+        feedback_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feedbackId != null">
+        #{feedbackId,jdbcType=CHAR},
+      </if>
+      <if test="evaluateId != null">
+        #{evaluateId,jdbcType=CHAR},
+      </if>
+      <if test="feedbackContent != null">
+        #{feedbackContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.FeedbackInfo">
+    update feedback_info
+    <set>
+      <if test="evaluateId != null">
+        evaluate_id = #{evaluateId,jdbcType=CHAR},
+      </if>
+      <if test="feedbackContent != null">
+        feedback_content = #{feedbackContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where feedback_id = #{feedbackId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cyx.pojo.FeedbackInfo">
+    update feedback_info
+    set evaluate_id = #{evaluateId,jdbcType=CHAR},
+      feedback_content = #{feedbackContent,jdbcType=LONGVARCHAR}
+    where feedback_id = #{feedbackId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.FeedbackInfo">
+    update feedback_info
+    set evaluate_id = #{evaluateId,jdbcType=CHAR}
+    where feedback_id = #{feedbackId,jdbcType=CHAR}
+  </update>
+</mapper>

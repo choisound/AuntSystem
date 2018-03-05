@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AuntRequestInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.AuntRequestInfo">
+    <id column="request_id" jdbcType="CHAR" property="requestId" />
+    <result column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="request_time" jdbcType="TIMESTAMP" property="requestTime" />
+    <result column="reques_content" jdbcType="CHAR" property="requesContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    request_id, order_id, aunt_id, request_time, reques_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aunt_request_info
+    where request_id = #{requestId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from aunt_request_info
+    where request_id = #{requestId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.AuntRequestInfo">
+    insert into aunt_request_info (request_id, order_id, aunt_id, 
+      request_time, reques_content)
+    values (#{requestId,jdbcType=CHAR}, #{orderId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}, 
+      #{requestTime,jdbcType=TIMESTAMP}, #{requesContent,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.AuntRequestInfo">
+    insert into aunt_request_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        request_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="requestTime != null">
+        request_time,
+      </if>
+      <if test="requesContent != null">
+        reques_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        #{requestId,jdbcType=CHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="requestTime != null">
+        #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requesContent != null">
+        #{requesContent,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.AuntRequestInfo">
+    update aunt_request_info
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="requestTime != null">
+        request_time = #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requesContent != null">
+        reques_content = #{requesContent,jdbcType=CHAR},
+      </if>
+    </set>
+    where request_id = #{requestId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.AuntRequestInfo">
+    update aunt_request_info
+    set order_id = #{orderId,jdbcType=CHAR},
+      aunt_id = #{auntId,jdbcType=CHAR},
+      request_time = #{requestTime,jdbcType=TIMESTAMP},
+      reques_content = #{requesContent,jdbcType=CHAR}
+    where request_id = #{requestId,jdbcType=CHAR}
+  </update>
+</mapper>

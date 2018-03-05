@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.SystemDataInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.SystemDataInfo">
+    <id column="systemdate_id" jdbcType="CHAR" property="systemdateId" />
+    <result column="date_name" jdbcType="CHAR" property="dateName" />
+    <result column="date_num" jdbcType="CHAR" property="dateNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    systemdate_id, date_name, date_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_data_info
+    where systemdate_id = #{systemdateId,jdbcType=CHAR}
+  </select>
+  
+  
+  <select id="selectByDataName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_data_info
+    where date_name = #{dataName,jdbcType=CHAR}
+  </select>
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from system_data_info
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from system_data_info
+    where systemdate_id = #{systemdateId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.SystemDataInfo">
+    insert into system_data_info (systemdate_id, date_name, date_num
+      )
+    values (#{systemdateId,jdbcType=CHAR}, #{dateName,jdbcType=CHAR}, #{dateNum,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.SystemDataInfo">
+    insert into system_data_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="systemdateId != null">
+        systemdate_id,
+      </if>
+      <if test="dateName != null">
+        date_name,
+      </if>
+      <if test="dateNum != null">
+        date_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="systemdateId != null">
+        #{systemdateId,jdbcType=CHAR},
+      </if>
+      <if test="dateName != null">
+        #{dateName,jdbcType=CHAR},
+      </if>
+      <if test="dateNum != null">
+        #{dateNum,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.SystemDataInfo">
+    update system_data_info
+    <set>
+      <if test="dateName != null">
+        date_name = #{dateName,jdbcType=CHAR},
+      </if>
+      <if test="dateNum != null">
+        date_num = #{dateNum,jdbcType=CHAR},
+      </if>
+    </set>
+    where systemdate_id = #{systemdateId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.SystemDataInfo">
+    update system_data_info
+    set 
+      date_num = #{dateNum,jdbcType=CHAR}
+    where systemdate_id = #{systemdateId,jdbcType=CHAR}
+  </update>
+  
+</mapper>

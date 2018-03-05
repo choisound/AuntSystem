@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AuntOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.AuntOrderInfo">
+    <id column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="order_address" jdbcType="CHAR" property="orderAddress" />
+    <result column="order_money" jdbcType="CHAR" property="orderMoney" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_res" jdbcType="TIMESTAMP" property="orderRes" />
+    <result column="aunt_starttime" jdbcType="TIMESTAMP" property="auntStarttime" />
+    <result column="order_desc" jdbcType="CHAR" property="orderDesc" />
+    <result column="order_roughtime" jdbcType="TIMESTAMP" property="orderRoughtime" />
+      <result column="order_zwaddress" jdbcType="CHAR" property="orderZwaddress"/>
+  </resultMap>
+    <resultMap id="allInfo" type="com.cyx.pojo.CountSum">
+        <result column="sum(order_money)" property="sum" jdbcType="VARCHAR"/>
+        <result column="count(*)" property="count" jdbcType="VARCHAR"/>
+    </resultMap>
+  <sql id="Base_Column_List">
+    order_id, user_id, aunt_id, service_id, start_time, end_time, order_address, order_money, 
+    order_state, order_res, aunt_starttime, order_desc, order_roughtime,order_zwaddress
+  </sql>
+  
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select 
+    *
+    from auntorder_info_#{index}
+    where order_id = #{orderId}
+  </select>
+ <select id="selectByAuntId" resultMap="BaseResultMap">
+    select 
+    *
+    from auntorder_info_#{index}
+    where aunt_id = #{auntId}
+  </select>
+  <select id="selectByAuntIdL" resultMap="BaseResultMap">
+    select 
+    *
+    from auntorder_info_#{index}
+    where aunt_id = #{auntId} and ((order_state &lt;  3 and order_state &gt; -1) or order_state=3 or order_state =6 or order_state = 7) 
+  </select>
+  <select id="selectMoneyEachMonth"  resultMap="allInfo">
+    select count(*),sum(order_money) from auntorder_info_${index} 
+where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y%m') = date_format(curdate() , '%Y%m') and (order_state = 9 or order_state = 8) ;
+  </select>
+  <select id="selectOrderEachMonth"  resultMap="BaseResultMap">
+    select * from auntorder_info_${index} 
+	where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y-%m') = #{month};
+  </select>
+  <select id="selectOnlineOrderEachMonth"  resultMap="BaseResultMap">
+    select * from auntorder_info_${index} 
+	where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y-%m') = #{month} and order_state = 9;
+  </select>
+  <select id="selectOfflineOrderEachMonth"  resultMap="BaseResultMap">
+    select * from auntorder_info_${index} 
+	where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y-%m') = #{month} and order_state = 8;
+  </select>
+  <select id="selectOnlineMoneyEachMonth"  resultType="java.lang.String">
+    select sum(order_money) from auntorder_info_${index} 
+	where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y-%m') = #{month} and order_state = 9;
+  </select>
+  <select id="selectOfflineMoneyEachMonth"  resultType="java.lang.String">
+    select sum(order_money) from auntorder_info_${index} 
+	where auntorder_info_${index}.aunt_id=#{auntId} and date_format(auntorder_info_${index}.end_time, '%Y-%m') = #{month} and order_state = 8;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from auntorder_info_0,auntorder_info_1,auntorder_info_2,auntorder_info_3,auntorder_info_4
+    where order_id = #{0}
+  </delete>
+   <delete id="deleteByIndexAuntId" parameterType="java.lang.String">
+    delete from auntorder_info_${index}
+    where order_id = #{orderId}
+  </delete>
+  <insert id="insert" >
+    insert into auntorder_info_#{index} (order_id, user_id, aunt_id, 
+      service_id, start_time, end_time, 
+      order_address, order_money, order_state, 
+      order_res, aunt_starttime, order_desc, 
+      order_roughtime,order_zwaddress)
+    values (#{auntorder.orderId,jdbcType=CHAR}, #{auntorder.userId,jdbcType=CHAR}, #{auntorder.auntId,jdbcType=CHAR}, 
+      #{auntorder.serviceId,jdbcType=CHAR}, #{auntorder.startTime,jdbcType=TIMESTAMP}, #{auntorder.endTime,jdbcType=TIMESTAMP}, 
+      #{auntorder.orderAddress,jdbcType=CHAR}, #{auntorder.orderMoney,jdbcType=CHAR}, #{auntorder.orderState,jdbcType=INTEGER}, 
+      #{auntorder.orderRes,jdbcType=TIMESTAMP}, #{auntorder.auntStarttime,jdbcType=TIMESTAMP}, #{auntorder.orderDesc,jdbcType=CHAR}, 
+      #{auntorder.orderRoughtime,jdbcType=TIMESTAMP},#{auntorder.orderZwaddress,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" >
+    insert into auntorder_info_#{index}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="serviceId != null">
+        service_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="orderAddress != null">
+        order_address,
+      </if>
+      <if test="orderMoney != null">
+        order_money,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="orderRes != null">
+        order_res,
+      </if>
+      <if test="auntStarttime != null">
+        aunt_starttime,
+      </if>
+      <if test="orderDesc != null">
+        order_desc,
+      </if>
+      <if test="orderRoughtime != null">
+        order_roughtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{auntorder.orderId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{auntorder.userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntorder.auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        #{auntorder.serviceId,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null">
+        #{auntorder.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{auntorder.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderAddress != null">
+        #{auntorder.orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="orderMoney != null">
+        #{auntorder.orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="orderState != null">
+        #{auntorder.orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderRes != null">
+        #{auntorder.orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntStarttime != null">
+        #{auntorder.auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDesc != null">
+        #{auntorder.orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="orderRoughtime != null">
+        #{auntorder.orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" >
+    update auntorder_info_#{index}
+    <set>
+      <if test="auntorder.userId != null">
+        user_id = #{auntorder.userId,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.auntId != null">
+        aunt_id = #{auntorder.auntId,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.serviceId != null">
+        service_id = #{auntorder.serviceId,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.startTime != null">
+        start_time = #{auntorder.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntorder.endTime != null">
+        end_time = #{auntorder.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntorder.orderAddress != null">
+        order_address = #{auntorder.orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.orderMoney != null">
+        order_money = #{auntorder.orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.orderState != null">
+        order_state = #{auntorder.orderState,jdbcType=INTEGER},
+      </if>
+      <if test="auntorder.orderRes != null">
+        order_res = #{auntorder.orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntorder.auntStarttime != null">
+        aunt_starttime = #{auntorder.auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntorder.orderDesc != null">
+        order_desc = #{auntorder.orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="auntorder.orderRoughtime != null">
+        order_roughtime = #{auntorder.orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{auntorder.orderId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey">
+    update auntorder_info_#{index}
+    set user_id = #{auntorder.userId,jdbcType=CHAR},
+      aunt_id = #{auntorder.auntId,jdbcType=CHAR},
+      service_id = #{auntorder.serviceId,jdbcType=CHAR},
+      start_time = #{auntorder.startTime,jdbcType=TIMESTAMP},
+      end_time = #{auntorder.endTime,jdbcType=TIMESTAMP},
+      order_address = #{auntorder.orderAddress,jdbcType=CHAR},
+      order_money = #{auntorder.orderMoney,jdbcType=CHAR},
+      order_state = #{auntorder.orderState,jdbcType=INTEGER},
+      order_res = #{auntorder.orderRes,jdbcType=TIMESTAMP},
+      aunt_starttime = #{auntorder.auntStarttime,jdbcType=TIMESTAMP},
+      order_desc = #{auntorder.orderDesc,jdbcType=CHAR},
+      order_roughtime = #{auntorder.orderRoughtime,jdbcType=TIMESTAMP}
+    where order_id = #{auntorder.orderId,jdbcType=CHAR}
+  </update>
+</mapper>

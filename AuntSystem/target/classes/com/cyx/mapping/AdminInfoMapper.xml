@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AdminInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.AdminInfo">
+    <id column="admin_id" jdbcType="CHAR" property="adminId" />
+    <result column="admin_count" jdbcType="CHAR" property="adminCount" />
+    <result column="admin_password" jdbcType="CHAR" property="adminPassword" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_id, admin_count, admin_password
+  </sql>
+   <select id="selectByPhoneAndPassword" resultMap="BaseResultMap">
+    select 
+    *
+    from admin_info
+    where admin_count = #{0} and admin_password=#{1}
+  </select>
+  <select id="selectByPhoneno" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin_info
+    where admin_count = #{adminCount,jdbcType=CHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin_info
+    where admin_id = #{adminId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from admin_info
+    where admin_id = #{adminId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.AdminInfo">
+    insert into admin_info (admin_id, admin_count, admin_password
+      )
+    values (#{adminId,jdbcType=CHAR}, #{adminCount,jdbcType=CHAR}, #{adminPassword,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.AdminInfo">
+    insert into admin_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="adminCount != null">
+        admin_count,
+      </if>
+      <if test="adminPassword != null">
+        admin_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=CHAR},
+      </if>
+      <if test="adminCount != null">
+        #{adminCount,jdbcType=CHAR},
+      </if>
+      <if test="adminPassword != null">
+        #{adminPassword,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.AdminInfo">
+    update admin_info
+    <set>
+      <if test="adminCount != null">
+        admin_count = #{adminCount,jdbcType=CHAR},
+      </if>
+      <if test="adminPassword != null">
+        admin_password = #{adminPassword,jdbcType=CHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.AdminInfo">
+    update admin_info
+    set admin_count = #{adminCount,jdbcType=CHAR},
+      admin_password = #{adminPassword,jdbcType=CHAR}
+    where admin_id = #{adminId,jdbcType=CHAR}
+  </update>
+</mapper>

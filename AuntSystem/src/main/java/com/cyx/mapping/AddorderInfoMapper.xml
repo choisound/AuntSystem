@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AddorderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.AddorderInfo">
+    <id column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="order_address" jdbcType="CHAR" property="orderAddress" />
+    <result column="order_money" jdbcType="CHAR" property="orderMoney" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="order_res" jdbcType="TIMESTAMP" property="orderRes" />
+    <result column="aunt_starttime" jdbcType="TIMESTAMP" property="auntStarttime" />
+    <result column="order_desc" jdbcType="CHAR" property="orderDesc" />
+    <result column="order_roughtime" jdbcType="TIMESTAMP" property="orderRoughtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, user_id, aunt_id, service_id, start_time, end_time, order_address, order_money, 
+    order_state, order_res, aunt_starttime, order_desc, order_roughtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from addorder_info_#{0}
+    where order_id = #{1}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from addorder_info_#{0}
+    where order_id = #{1}
+  </delete>
+  <insert id="insert">
+    insert into addorder_info_#{index} (order_id, user_id, aunt_id, 
+      service_id, start_time, end_time, 
+      order_address, order_money, order_state, 
+      order_res, aunt_starttime, order_desc, 
+      order_roughtime)
+    values (#{addorder.orderId,jdbcType=CHAR}, #{addorder.userId,jdbcType=CHAR}, #{addorder.auntId,jdbcType=CHAR}, 
+      #{addorder.serviceId,jdbcType=CHAR}, #{addorder.startTime,jdbcType=TIMESTAMP}, #{addorder.endTime,jdbcType=TIMESTAMP}, 
+      #{addorder.orderAddress,jdbcType=CHAR}, #{addorder.orderMoney,jdbcType=CHAR}, #{addorder.orderState,jdbcType=INTEGER}, 
+      #{addorder.orderRes,jdbcType=TIMESTAMP}, #{addorder.auntStarttime,jdbcType=TIMESTAMP}, #{addorder.orderDesc,jdbcType=CHAR}, 
+      #{addorder.orderRoughtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" >
+    insert into addorder_info_#{index}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="serviceId != null">
+        service_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="orderAddress != null">
+        order_address,
+      </if>
+      <if test="orderMoney != null">
+        order_money,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="orderRes != null">
+        order_res,
+      </if>
+      <if test="auntStarttime != null">
+        aunt_starttime,
+      </if>
+      <if test="orderDesc != null">
+        order_desc,
+      </if>
+      <if test="orderRoughtime != null">
+        order_roughtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{addorder.orderId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{addorder.userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{addorder.auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        #{addorder.serviceId,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null">
+        #{addorder.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{addorder.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderAddress != null">
+        #{addorder.orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="orderMoney != null">
+        #{addorder.orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="orderState != null">
+        #{addorder.orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderRes != null">
+        #{addorder.orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntStarttime != null">
+        #{addorder.auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDesc != null">
+        #{addorder.orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="orderRoughtime != null">
+        #{addorder.orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" >
+    update addorder_info_#{index}
+    <set>
+      <if test="userId != null">
+        user_id = #{addorder.userId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{addorder.auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        service_id = #{addorder.serviceId,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{addorder.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{addorder.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderAddress != null">
+        order_address = #{addorder.orderAddress,jdbcType=CHAR},
+      </if>
+      <if test="orderMoney != null">
+        order_money = #{addorder.orderMoney,jdbcType=CHAR},
+      </if>
+      <if test="orderState != null">
+        order_state = #{addorder.orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderRes != null">
+        order_res = #{addorder.orderRes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auntStarttime != null">
+        aunt_starttime = #{addorder.auntStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDesc != null">
+        order_desc = #{addorder.orderDesc,jdbcType=CHAR},
+      </if>
+      <if test="orderRoughtime != null">
+        order_roughtime = #{addorder.orderRoughtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{addorder.orderId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey">
+    update addorder_info_#{index}
+    set user_id = #{addorder.userId,jdbcType=CHAR},
+      aunt_id = #{addorder.auntId,jdbcType=CHAR},
+      service_id = #{addorder.serviceId,jdbcType=CHAR},
+      start_time = #{addorder.startTime,jdbcType=TIMESTAMP},
+      end_time = #{addorder.endTime,jdbcType=TIMESTAMP},
+      order_address = #{addorder.orderAddress,jdbcType=CHAR},
+      order_money = #{addorder.orderMoney,jdbcType=CHAR},
+      order_state = #{addorder.orderState,jdbcType=INTEGER},
+      order_res = #{addorder.orderRes,jdbcType=TIMESTAMP},
+      aunt_starttime = #{addorder.auntStarttime,jdbcType=TIMESTAMP},
+      order_desc = #{addorder.orderDesc,jdbcType=CHAR},
+      order_roughtime = #{addorder.orderRoughtime,jdbcType=TIMESTAMP}
+    where order_id = #{addorder.orderId,jdbcType=CHAR}
+  </update>
+</mapper>

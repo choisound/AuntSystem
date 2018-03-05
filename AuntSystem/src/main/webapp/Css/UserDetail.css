@@ -1,0 +1,11 @@
+.content .information .black_page{
+    width: 100px;
+    height: 30px;
+    display: block;
+    font-size: 15px;
+    color: green;
+    border: 3px solid;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.UserInfo">
+    <id column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="resgiter_id"  jdbcType="CHAR" property="resgiterId"/>
+    <result column="user_name" jdbcType="CHAR" property="userName" />
+    <result column="user_address" jdbcType="CHAR" property="userAddress" />
+    <result column="user_phoneno" jdbcType="CHAR" property="userPhoneno" />
+    <result column="user_sex" jdbcType="CHAR" property="userSex" />
+    <result column="user_count" jdbcType="CHAR" property="userCount" />
+    <result column="user_password" jdbcType="CHAR" property="userPassword" />
+    <result column="user_state" jdbcType="INTEGER" property="userState" />
+    <result column="user_jifen" jdbcType="CHAR" property="userJifen" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id,resgiter_id, user_name, user_address, user_phoneno, user_sex, user_count, user_password, 
+    user_state, user_jifen
+  </sql>
+  <sql id="adminreturn_List">
+    user_id,resgiter_id, user_name, user_address, user_phoneno, user_sex, 
+    user_state
+  </sql>
+  <sql id="return_List">
+    user_id,resgiter_id, user_name, user_address, user_phoneno, user_sex, user_count,  
+    user_state, user_jifen
+  </sql>
+   <select id="selectAllUserCount" resultType="java.lang.Integer">
+    select 
+   	count(*)
+    from user_info
+  </select>
+   <select id="selectAllList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="adminreturn_List" />
+    from user_info
+    limit #{0},#{1}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="return_List" />
+    from user_info
+    where user_id = #{userId,jdbcType=CHAR}
+  </select>
+   <select id="adminselectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+   	*
+    from user_info
+    where user_id = #{userId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_info
+    where user_id = #{userId,jdbcType=CHAR}
+  </delete>
+  <select id="selectByPhoneno" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="return_List" />
+    from user_info
+    where user_phoneno = #{userPhoneno,jdbcType=CHAR}
+  </select>
+  <select id="selectByPhonenoAndPassword" resultMap="BaseResultMap">
+    select 
+    <include refid="return_List" />
+    from user_info
+    where user_phoneno = #{0} and user_password=#{1}
+  </select>   
+  <insert id="insert" parameterType="com.cyx.pojo.UserInfo">
+    insert into user_info (user_id, resgiter_id,user_name, user_address, 
+      user_phoneno, user_sex, user_count, 
+      user_password, user_state, user_jifen
+      )
+    values (#{userId,jdbcType=CHAR},#{resgiterId,jdbcType=CHAR}, #{userName,jdbcType=CHAR}, #{userAddress,jdbcType=CHAR}, 
+      #{userPhoneno,jdbcType=CHAR}, #{userSex,jdbcType=CHAR}, #{userCount,jdbcType=CHAR}, 
+      #{userPassword,jdbcType=CHAR}, #{userState,jdbcType=INTEGER}, #{userJifen,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.UserInfo">
+    insert into user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+       <if test="resgiterId != null">
+        resgiter_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userAddress != null">
+        user_address,
+      </if>
+      <if test="userPhoneno != null">
+        user_phoneno,
+      </if>
+      <if test="userSex != null">
+        user_sex,
+      </if>
+      <if test="userCount != null">
+        user_count,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userState != null">
+        user_state,
+      </if>
+      <if test="userJifen != null">
+        user_jifen,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="resgiterId != null">
+        #{resgiterId,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=CHAR},
+      </if>
+      <if test="userAddress != null">
+        #{userAddress,jdbcType=CHAR},
+      </if>
+      <if test="userPhoneno != null">
+        #{userPhoneno,jdbcType=CHAR},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=CHAR},
+      </if>
+      <if test="userCount != null">
+        #{userCount,jdbcType=CHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=CHAR},
+      </if>
+      <if test="userState != null">
+        #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userJifen != null">
+        #{userJifen,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPhoneNoSelective" parameterType="com.cyx.pojo.UserInfo">
+    update user_info
+    <set>
+     <if test="userName != null">
+        user_name = #{userName,jdbcType=CHAR},
+      </if>
+      <if test="userAddress != null">
+        user_address = #{userAddress,jdbcType=CHAR},
+      </if>
+      <if test="userPhoneno != null">
+        user_phoneno = #{userPhoneno,jdbcType=CHAR},
+      </if>
+      <if test="userSex != null">
+        user_sex = #{userSex,jdbcType=CHAR},
+      </if>
+      <if test="userCount != null">
+        user_count = #{userCount,jdbcType=CHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=CHAR},
+      </if>
+      <if test="userState != null">
+        user_state = #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userJifen != null">
+        user_jifen = #{userJifen,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_phoneno = #{userPhoneno,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.UserInfo">
+    update user_info
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=CHAR},
+      </if>
+      <if test="userAddress != null">
+        user_address = #{userAddress,jdbcType=CHAR},
+      </if>
+      <if test="userPhoneno != null">
+        user_phoneno = #{userPhoneno,jdbcType=CHAR},
+      </if>
+      <if test="userSex != null">
+        user_sex = #{userSex,jdbcType=CHAR},
+      </if>
+      <if test="userCount != null">
+        user_count = #{userCount,jdbcType=CHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=CHAR},
+      </if>
+      <if test="userState != null">
+        user_state = #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userJifen != null">
+        user_jifen = #{userJifen,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.UserInfo">
+    update user_info
+    set user_name = #{userName,jdbcType=CHAR},
+      user_address = #{userAddress,jdbcType=CHAR},
+      user_phoneno = #{userPhoneno,jdbcType=CHAR},
+      user_sex = #{userSex,jdbcType=CHAR},
+      user_count = #{userCount,jdbcType=CHAR},
+      user_password = #{userPassword,jdbcType=CHAR},
+      user_state = #{userState,jdbcType=INTEGER},
+      user_jifen = #{userJifen,jdbcType=CHAR}
+    where user_id = #{userId,jdbcType=CHAR}
+  </update>
+</mapper>

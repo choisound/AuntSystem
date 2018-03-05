@@ -1,0 +1,29 @@
+.information{
+    margin-left: 5%;
+}
+.content .information .tap{
+    line-height: 30px;
+    color:#98bf21;
+    font-weight: bold;
+    border-bottom: 3px solid #98bf21;
+    margin: 20px 0;
+    
+}
+.content .information .infom{
+    line-height: 40px;
+    color: green;
+    font-weight: bolder;
+    width: 50%;
+    word-wrap: break-word;
+    float: left;
+}
+.content .information .lab{
+    color:#000;
+    font-weight: bolder;
+    margin-right: 20px;
+    display:inline-block;
+}
+.content .information .setWidth{
+    width: 100%;
+    float: none;
+}

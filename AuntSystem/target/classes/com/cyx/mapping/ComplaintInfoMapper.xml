@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.ComplaintInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.ComplaintInfo">
+    <id column="complaint_id" jdbcType="CHAR" property="complaintId" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="order_id" jdbcType="CHAR" property="orderId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cyx.pojo.ComplaintInfo">
+    <result column="complaint_content" jdbcType="LONGVARCHAR" property="complaintContent" />
+  </resultMap>
+  <resultMap type="com.cyx.pojo.ComplaintContentInfo" id="conplaintContent">  
+    <id column="complaint_id" jdbcType="CHAR" property="complaintId" />
+	<result column="order_id" jdbcType="CHAR" property="orderId" />
+	<association property="userInfo" column="user_id" javaType="com.cyx.pojo.UserInfo">
+		 <id column="user_id" jdbcType="CHAR" property="userId" />
+		 <result column="resgiter_id"  jdbcType="CHAR" property="resgiterId"/>
+	    <result column="user_name" jdbcType="CHAR" property="userName" />
+	    <result column="user_address" jdbcType="CHAR" property="userAddress" />
+	    <result column="user_phoneno" jdbcType="CHAR" property="userPhoneno" />
+	    <result column="user_sex" jdbcType="CHAR" property="userSex" />
+	    <result column="user_count" jdbcType="CHAR" property="userCount" />
+	    <result column="user_password" jdbcType="CHAR" property="userPassword" />
+	    <result column="user_state" jdbcType="INTEGER" property="userState" />
+	    <result column="user_jifen" jdbcType="CHAR" property="userJifen" />
+	</association>
+</resultMap>  
+  <sql id="Base_Column_List">
+    complaint_id, user_id, order_id
+  </sql>
+  <sql id="Blob_Column_List">
+    complaint_content
+  </sql>
+  <select id="selectAllLimit" parameterType="java.lang.Integer" resultMap="conplaintContent">
+   SELECT * from complaint_info join user_info on complaint_info.user_id=user_info.user_id limit #{0},#{1};
+  </select>
+   <select id="selectByOrderIdAndUserId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+   SELECT * from complaint_info where order_id=#{0} and user_id = #{1};
+  </select>
+  <select id="selectAllCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   SELECT count(*) from complaint_info join user_info on complaint_info.user_id=user_info.user_id;
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from complaint_info
+    where complaint_id = #{complaintId,jdbcType=CHAR}
+  </select>
+  
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    *
+    from complaint_info
+    where user_id = #{userId,jdbcType=CHAR}
+  </select>
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    *
+    from complaint_info
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from complaint_info
+    where complaint_id = #{complaintId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.ComplaintInfo">
+    insert into complaint_info (complaint_id, user_id, order_id, 
+      complaint_content)
+    values (#{complaintId,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{orderId,jdbcType=CHAR}, 
+      #{complaintContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.ComplaintInfo">
+    insert into complaint_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="complaintId != null">
+        complaint_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="complaintContent != null">
+        complaint_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="complaintId != null">
+        #{complaintId,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="complaintContent != null">
+        #{complaintContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.ComplaintInfo">
+    update complaint_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="complaintContent != null">
+        complaint_content = #{complaintContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where complaint_id = #{complaintId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cyx.pojo.ComplaintInfo">
+    update complaint_info
+    set user_id = #{userId,jdbcType=CHAR},
+      order_id = #{orderId,jdbcType=CHAR},
+      complaint_content = #{complaintContent,jdbcType=LONGVARCHAR}
+    where complaint_id = #{complaintId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.ComplaintInfo">
+    update complaint_info
+    set user_id = #{userId,jdbcType=CHAR},
+      order_id = #{orderId,jdbcType=CHAR}
+    where complaint_id = #{complaintId,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.WorkInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.WorkInfo">
+    <id column="work_id" jdbcType="CHAR" property="workId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="work_starttime" jdbcType="TIMESTAMP" property="workStarttime" />
+    <result column="word_endtime" jdbcType="TIMESTAMP" property="wordEndtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    work_id, aunt_id, work_starttime, word_endtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from work_info
+    where work_id = #{workId,jdbcType=CHAR}
+  </select>
+  
+  
+  <select id="selectByAuntId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    *
+    from work_info
+    where aunt_id = #{auntId,jdbcType=CHAR}
+  </select>
+
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from work_info
+    where work_id = #{workId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.WorkInfo">
+    insert into work_info (work_id, aunt_id, work_starttime, 
+      word_endtime)
+    values (#{workId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}, #{workStarttime,jdbcType=TIMESTAMP}, 
+      #{wordEndtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.WorkInfo">
+    insert into work_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="workId != null">
+        work_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="workStarttime != null">
+        work_starttime,
+      </if>
+      <if test="wordEndtime != null">
+        word_endtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="workId != null">
+        #{workId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="workStarttime != null">
+        #{workStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wordEndtime != null">
+        #{wordEndtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.WorkInfo">
+    update work_info
+    <set>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="workStarttime != null">
+        work_starttime = #{workStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wordEndtime != null">
+        word_endtime = #{wordEndtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where work_id = #{workId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.WorkInfo">
+    update work_info
+    set 
+      work_starttime = #{workStarttime,jdbcType=TIMESTAMP},
+      word_endtime = #{wordEndtime,jdbcType=TIMESTAMP}
+    where work_id = #{workId,jdbcType=CHAR}
+  </update>
+
+</mapper>

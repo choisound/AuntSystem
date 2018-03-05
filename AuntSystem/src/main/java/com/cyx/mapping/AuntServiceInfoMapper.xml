@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.AuntServiceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.AuntServiceInfo">
+    <id column="auntservice_no" jdbcType="CHAR" property="auntserviceNo" />
+    <result column="service_id" jdbcType="CHAR" property="serviceId" />
+    <result column="aunt_id" jdbcType="CHAR" property="auntId" />
+    <result column="service_rate" jdbcType="CHAR" property="serviceRate" />
+  </resultMap>
+  <resultMap id="QueryForList" type="com.cyx.pojo.AuntServiceContent">
+	    <result column="service_rate" jdbcType="CHAR" property="serviceRate" />
+        <result column="service_desc"  property="serviceDesc" />
+   		<result column="service_name"  property="serviceName" />
+   		<result column="service_price"  property="servicePrice" /> 
+   		<result column="service_id" property="serviceId"/>  
+  </resultMap>
+  <sql id="Base_Column_List">
+    auntservice_no, service_id, aunt_id, service_rate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auntservice_info
+    where auntservice_no = #{auntserviceNo,jdbcType=CHAR}
+  </select>
+  <insert id="insertList" parameterType="java.util.List">  
+    insert into auntservice_info (auntservice_no, service_id, aunt_id, 
+      service_rate) values
+    <foreach collection="list" item="auntServiceInfo" index="index" separator="," >  
+        (#{auntServiceInfo.auntserviceNo,jdbcType=CHAR}, #{auntServiceInfo.serviceId,jdbcType=CHAR}, #{auntServiceInfo.auntId,jdbcType=CHAR}, 
+      #{auntServiceInfo.serviceRate,jdbcType=CHAR})
+    </foreach>  
+</insert> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from auntservice_info
+    where auntservice_no = #{auntserviceNo,jdbcType=CHAR}
+  </delete>
+   <select id="selectByAuntId" parameterType="java.lang.String" resultMap="QueryForList">
+	  SELECT service_info.*,auntservice_info.service_rate 
+	  from auntservice_info 
+	  JOIN service_info ON 
+	  auntservice_info.service_id=service_info.service_id 
+	  WHERE auntservice_info.aunt_id = #{auntId,jdbcType=CHAR}
+  </select>
+  <insert id="insert" parameterType="com.cyx.pojo.AuntServiceInfo">
+    insert into auntservice_info (auntservice_no, service_id, aunt_id, 
+      service_rate)
+    values (#{auntserviceNo,jdbcType=CHAR}, #{serviceId,jdbcType=CHAR}, #{auntId,jdbcType=CHAR}, 
+      #{serviceRate,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.AuntServiceInfo">
+    insert into auntservice_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="auntserviceNo != null">
+        auntservice_no,
+      </if>
+      <if test="serviceId != null">
+        service_id,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+      <if test="serviceRate != null">
+        service_rate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="auntserviceNo != null">
+        #{auntserviceNo,jdbcType=CHAR},
+      </if>
+      <if test="serviceId != null">
+        #{serviceId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceRate != null">
+        #{serviceRate,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.AuntServiceInfo">
+    update auntservice_info
+    <set>
+      <if test="serviceId != null">
+        service_id = #{serviceId,jdbcType=CHAR},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=CHAR},
+      </if>
+      <if test="serviceRate != null">
+        service_rate = #{serviceRate,jdbcType=CHAR},
+      </if>
+    </set>
+    where auntservice_no = #{auntserviceNo,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.AuntServiceInfo">
+    update auntservice_info
+    set service_id = #{serviceId,jdbcType=CHAR},
+      aunt_id = #{auntId,jdbcType=CHAR},
+      service_rate = #{serviceRate,jdbcType=CHAR}
+    where auntservice_no = #{auntserviceNo,jdbcType=CHAR}
+  </update>
+</mapper>

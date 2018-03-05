@@ -1,0 +1,94 @@
+.content .information .identify_img{
+    width: 100%;
+    height: 300px;
+}
+.content .information .identify_img img{
+    width: 40%;
+    height: 100%;
+    float: left;
+    padding: 0 5%;
+}
+.content .information .status{
+    line-height: 40px;
+    color: green;
+    font-weight: bolder;
+}
+.sub{
+    width: 100px;
+    height: 40px;
+    background: #2e8e26;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Lobster Two', cursive;
+    font-size: 20px;
+}
+.content .information .Aunt_vocation{
+    width: 150px;
+    height: 30px;
+    display: block;
+    font-size: 15px;
+    color: green;
+    border: 3px solid;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-left: 50px;
+}
+.wrap{
+	width: 300px;
+	height: 300px;
+	margin: 30px 0;
+}
+  .circal{
+  	width:200px;
+  	height: 200px;
+    background: linear-gradient(to right, green 50%, red 50%);
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+  }
+  .circal:before{
+  	content: "";
+  	display: block;
+  	width: 50%;
+  	height: 100%;
+  	margin-left: 50%;
+  	background: green;
+  	border-radius: 0 100% 100% 0/0 50% 50% 0;
+  	
+  	transform-origin: left;
+  }
+   .green,.red{
+   	width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0px 0 0 80px;
+    display: inline-block;
+    position: relative;
+    bottom: -10px;
+   }
+
+   .green{
+   	 background: green;
+   }
+   .red{
+   	background: red;
+   }
+   .rate{
+   	margin-left: 20px;
+   	font-size: 15px;
+   	margin-top: 15px;
+   	font-weight: bold;
+   }
+  .absence{
+    margin-top:30px;
+    width:400px;
+  }
+  .absence p{
+  text-align:center;
+  margin-top:20px;
+  }
+  .colorRed{
+   color:red;
+  }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE generatorConfiguration    
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"    
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">    
+<generatorConfiguration>    
+    <classPathEntry  location="D:/software/Myeclipse/Code/AuntSystem/src/main/resources/config/mysql-connector-java-5.1.26-bin.jar"/>    
+    <context id="DB2Tables"  targetRuntime="MyBatis3">    
+   		 <property name="mergeable" value="true"></property>
+        <commentGenerator>    
+            <property name="suppressDate" value="true"/>    
+            <property name="suppressAllComments" value="true"/>    
+        </commentGenerator>    
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/aunt_system" userId="root" password="root">    
+        </jdbcConnection>    
+        <javaTypeResolver>    
+            <property name="forceBigDecimals" value="false"/>    
+        </javaTypeResolver>    
+        <javaModelGenerator targetPackage="com.cyx.pojo" targetProject="AuntSystem/src/main/java">    
+            <property name="enableSubPackages" value="true"/>    
+            <property name="trimStrings" value="true"/>    
+        </javaModelGenerator>    
+        <sqlMapGenerator targetPackage="com.cyx.mapping" targetProject="AuntSystem/src/main/java">    
+            <property name="enableSubPackages" value="true"/>    
+        </sqlMapGenerator>    
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.cyx.dao" targetProject="AuntSystem/src/main/java">    
+            <property name="enableSubPackages" value="true"/>    
+        </javaClientGenerator>    
+       <!--    <table tableName="admin_info" domainObjectName="AdminInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>  
+      	  <table tableName="aunt_info" domainObjectName="AuntInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+      	  <table tableName="aunt_request_info" domainObjectName="AuntRequestInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="auntservice_info" domainObjectName="AuntServiceInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>  
+          <table tableName="blacklist_info" domainObjectName="BlackListInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>  
+          <table tableName="complaint_info" domainObjectName="ComplaintInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="customerservice_info" domainObjectName="CustomerServiceInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="evaluate_info" domainObjectName="EvaluateInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="feedback_info" domainObjectName="FeedbackInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="holiday_info" domainObjectName="HolidayInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="order_info" domainObjectName="OrderInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="service_info" domainObjectName="ServiceInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="system_blacklist_info" domainObjectName="SystemBlacklistInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="system_data_info" domainObjectName="SystemDataInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="system_share_info" domainObjectName="SystemShareInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+          <table tableName="work_info" domainObjectName="WorkInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+           -->
+          <table tableName="monthlypay" domainObjectName="MonthlyPay" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="true"></table>
+    </context>
+        
+</generatorConfiguration>  

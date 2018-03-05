@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyx.dao.MonthlyPayMapper">
+  <resultMap id="BaseResultMap" type="com.cyx.pojo.MonthlyPay">
+    <id column="monthlypay_id" jdbcType="INTEGER" property="monthlypayId" />
+    <result column="monthlypay_mouth" jdbcType="VARCHAR" property="monthlypayMouth" />
+    <result column="monthlypay_state" jdbcType="INTEGER" property="monthlypayState" />
+    <result column="aunt_id" jdbcType="VARCHAR" property="auntId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    monthlypay_id, monthlypay_mouth, monthlypay_state, aunt_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from monthlypay
+    where monthlypay_id = #{monthlypayId,jdbcType=INTEGER}
+  </select>
+  <select id="selectmonthbyauntid" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT monthlypay.monthlypay_mouth FROM monthlypay WHERE monthlypay.aunt_id=#{0} and monthlypay_mouth like concat(#{1},'%');
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from monthlypay
+    where monthlypay_id = #{monthlypayId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cyx.pojo.MonthlyPay">
+    insert into monthlypay (monthlypay_id, monthlypay_mouth, monthlypay_state, 
+      aunt_id)
+    values (#{monthlypayId,jdbcType=INTEGER}, #{monthlypayMouth,jdbcType=VARCHAR}, #{monthlypayState,jdbcType=INTEGER}, 
+      #{auntId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cyx.pojo.MonthlyPay">
+    insert into monthlypay
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="monthlypayId != null">
+        monthlypay_id,
+      </if>
+      <if test="monthlypayMouth != null">
+        monthlypay_mouth,
+      </if>
+      <if test="monthlypayState != null">
+        monthlypay_state,
+      </if>
+      <if test="auntId != null">
+        aunt_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="monthlypayId != null">
+        #{monthlypayId,jdbcType=INTEGER},
+      </if>
+      <if test="monthlypayMouth != null">
+        #{monthlypayMouth,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlypayState != null">
+        #{monthlypayState,jdbcType=INTEGER},
+      </if>
+      <if test="auntId != null">
+        #{auntId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyx.pojo.MonthlyPay">
+    update monthlypay
+    <set>
+      <if test="monthlypayMouth != null">
+        monthlypay_mouth = #{monthlypayMouth,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlypayState != null">
+        monthlypay_state = #{monthlypayState,jdbcType=INTEGER},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where monthlypay_id = #{monthlypayId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByMonthlySelective" parameterType="com.cyx.pojo.MonthlyPay">
+    update monthlypay
+    <set>
+      <if test="monthlypayMouth != null">
+        monthlypay_mouth = #{monthlypayMouth,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlypayState != null">
+        monthlypay_state = #{monthlypayState,jdbcType=INTEGER},
+      </if>
+      <if test="auntId != null">
+        aunt_id = #{auntId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where monthlypay_mouth = #{monthlypayMouth,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cyx.pojo.MonthlyPay">
+    update monthlypay
+    set monthlypay_mouth = #{monthlypayMouth,jdbcType=VARCHAR},
+      monthlypay_state = #{monthlypayState,jdbcType=INTEGER},
+      aunt_id = #{auntId,jdbcType=VARCHAR}
+    where monthlypay_id = #{monthlypayId,jdbcType=INTEGER}
+  </update>
+</mapper>
